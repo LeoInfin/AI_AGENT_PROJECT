@@ -9,6 +9,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langgraph.graph import StateGraph, END
 
+
 load_dotenv()
 # --- 1. CONFIGURATION ---
 # Ensure your GROQ_API_KEY is set in your environment variables
