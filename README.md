@@ -1,2 +1,2 @@
 1) install the requirements
-2) add an .env file based on .envexample
+2) cp .env.example .env
