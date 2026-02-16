@@ -8,6 +8,7 @@ class AgentState(TypedDict):
     review_score: float
     review_feedback: str
     revision_count: int
+    final_report: str
 
 class ArchitectureSchema(BaseModel):
     files: List[str] = Field(description="List of files to be created")

@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
-from config import llm
-from state import AgentState, ArchitectureSchema
+from src.config import llm
+from src.state import AgentState, ArchitectureSchema
 
 def architect_agent(state: AgentState):
     print("--- NODE: ARCHITECT ---")

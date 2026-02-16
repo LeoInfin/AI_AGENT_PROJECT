@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
-from config import llm
-from state import AgentState, ReviewSchema
+from src.config import llm
+from src.state import AgentState, ReviewSchema
 
 def reviewer_agent(state: AgentState):
     print("--- NODE: REVIEWER ---")
