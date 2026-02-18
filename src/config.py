@@ -2,6 +2,9 @@ import os
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 
+THRESHOLD = 0.8
+MAX_REVISIONS = 3
+
 load_dotenv()
 
 llm = ChatGroq(

@@ -1,2 +1,5 @@
-1) install the requirements
-2) cp .env.example .env
+1) python -m venv .venv
+2) .venv\Scripts\activate
+3) pip install -r requirements.txt
+4) cp .env.example .env
+5) 
