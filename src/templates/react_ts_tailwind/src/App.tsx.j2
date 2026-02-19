@@ -1,0 +1,29 @@
+import { useState } from 'react'
+{% if imports %}
+{{ imports }}
+{% endif %}
+
+function App() {
+  return (
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-8">
+      <header className="max-w-4xl mx-auto mb-12">
+        <h1 className="text-4xl font-bold text-primary mb-2">
+          {{ project_name | default('My AI App') }}
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          Built with React, TypeScript, and Tailwind CSS.
+        </p>
+      </header>
+      
+      <main className="max-w-4xl mx-auto space-y-8">
+        {{ main_content | default('<section className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"><p>Start editing src/App.tsx to see your changes.</p></section>') }}
+      </main>
+
+      <footer className="max-w-4xl mx-auto mt-20 pt-8 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-500 text-center">
+        Powered by AI Templates & Jinja2
+      </footer>
+    </div>
+  )
+}
+
+export default App

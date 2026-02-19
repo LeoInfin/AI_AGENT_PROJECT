@@ -4,6 +4,7 @@ from langchain_groq import ChatGroq
 
 THRESHOLD = 0.8
 MAX_REVISIONS = 3
+PROJECTS_FOLDER = "generated_projects"
 
 load_dotenv()
 

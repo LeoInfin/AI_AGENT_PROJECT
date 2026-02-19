@@ -9,6 +9,8 @@ class AgentState(TypedDict):
     review_feedback: str
     revision_count: int
     final_report: str
+    template_name: str
+    template_context: dict
 
 class ArchitectureSchema(BaseModel):
     files: List[str] = Field(description="List of files to be created")
