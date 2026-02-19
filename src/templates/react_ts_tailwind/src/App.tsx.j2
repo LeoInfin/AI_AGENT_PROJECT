@@ -1,7 +1,5 @@
-import { useState } from 'react'
-{% if imports %}
-{{ imports }}
-{% endif %}
+import { useState } from 'react';
+import Home from '@/pages/Home';
 
 function App() {
   return (
@@ -16,7 +14,7 @@ function App() {
       </header>
       
       <main className="max-w-4xl mx-auto space-y-8">
-        {{ main_content | default('<section className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"><p>Start editing src/App.tsx to see your changes.</p></section>') }}
+        <Home />
       </main>
 
       <footer className="max-w-4xl mx-auto mt-20 pt-8 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-500 text-center">

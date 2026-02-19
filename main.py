@@ -9,6 +9,8 @@ from src.utils.renderer import save_project_to_disk
 
 app = create_graph()
 
+#print(app.get_graph().draw_mermaid())
+
 if __name__ == "__main__":
     task = input("Enter your coding task: ")
 

@@ -15,6 +15,7 @@ class AgentState(TypedDict):
 class ArchitectureSchema(BaseModel):
     files: List[str] = Field(description="List of files to be created")
     technologies: List[str] = Field(description="Stack used")
+    template_context: dict = Field(description="Key-value pairs for the Jinja2 template (e.g., project_name, primary_color, secondary_color, custom_components)")
     logic_summary: str = Field(description="High-level logic summary")
 
 class ReviewSchema(BaseModel):

@@ -1,0 +1,27 @@
+import React from 'react';
+
+{% if custom_components %}
+{% for comp in custom_components %}
+import {{ comp.component_name }} from '@/components/sections/{{ comp.component_name }}';
+{% endfor %}
+{% endif %}
+
+interface HomeProps {
+// You can add global home props here
+}
+
+export default function Home({}: HomeProps) {
+return (
+<div className="space-y-12">
+    {% if custom_components %}
+    {% for comp in custom_components %}
+    <{{ comp.component_name }} />
+    {% endfor %}
+    {% else %}
+    <section className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+        <p>Welcome to your new page. Add custom components to see them rendered here.</p>
+    </section>
+    {% endif %}
+</div>
+);
+}

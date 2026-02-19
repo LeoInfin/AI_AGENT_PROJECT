@@ -1,0 +1,71 @@
+import React from 'react';
+import { Zap, Shield, Cpu, Globe, Rocket, MessageSquare } from 'lucide-react';
+
+export default function Features() {
+const features = [
+{
+title: 'Ultra Fast',
+description: 'Built on the latest engine for near-instant responses and execution.',
+icon:
+<Zap className="text-primary" />,
+},
+{
+title: 'Enterprise Security',
+description: 'End-to-end encryption and compliance ready out of the box.',
+icon:
+<Shield className="text-primary" />,
+},
+{
+title: 'AI Native',
+description: 'Designed from the ground up to leverage the latest LLM capabilities.',
+icon:
+<Cpu className="text-primary" />,
+},
+{
+title: 'Global Scale',
+description: 'Deploy anywhere in the world with our distributed infrastructure.',
+icon:
+<Globe className="text-primary" />,
+},
+{
+title: 'Quick Start',
+description: 'Go from zero to production in minutes with our CLI tools.',
+icon:
+<Rocket className="text-primary" />,
+},
+{
+title: 'AI Chat Support',
+description: 'Internal AI support agent available 24/7 to help your team.',
+icon:
+<MessageSquare className="text-primary" />,
+},
+];
+
+return (
+<section className="py-24 bg-gray-50/50 dark:bg-gray-900/50 rounded-3xl border border-gray-100 dark:border-gray-800">
+    <div className="container mx-auto px-6">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Powerful Features for Modern Teams</h2>
+            <p className="text-gray-600 dark:text-gray-400">Everything you need to build next-generation applications
+                without the boilerplate.</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, idx) => (
+            <div key={idx}
+                className="p-8 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-primary/50 dark:hover:border-primary/50 transition-colors group">
+                <div
+                    className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+                <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-sm">
+                    {feature.description}
+                </p>
+            </div>
+            ))}
+        </div>
+    </div>
+</section>
+);
+}
