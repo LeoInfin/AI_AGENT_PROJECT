@@ -1,5 +1,6 @@
 import os
 import re
+import subprocess
 from src.state import AgentState
 from src.utils.jinja_renderer import render_template_folder
 from src.config import PROJECTS_FOLDER
@@ -78,3 +79,47 @@ def save_project_to_disk(state: AgentState, base_folder: str = "generated_app"):
         print("ℹ️ No AI code found in state to apply.")
 
     print(f"\n✅ Project successfully generated in ./{final_folder}")
+    return final_folder
+
+def run_npm_build_check(project_path: str) -> str | None:
+    """
+    Runs 'npm install' and 'npm run build' in the specified folder.
+    Returns stderr/stdout as error message if it fails, otherwise None.
+    """
+    print(f"🛠️ Starting build validation in: {project_path}")
+    
+    try:
+        # Run npm install
+        print("📦 Running npm install...")
+        install_res = subprocess.run(
+            ["npm", "install"], 
+            cwd=project_path, 
+            capture_output=True, 
+            text=True, 
+            shell=True
+        )
+        if install_res.returncode != 0:
+            error_msg = f"NPM Install Failed:\n{install_res.stderr}\n{install_res.stdout}"
+            print(f"❌ Build validation failed at install step.")
+            return error_msg
+
+        # Run npm run build
+        print("🏗️ Running npm run build...")
+        build_res = subprocess.run(
+            ["npm", "run", "build"], 
+            cwd=project_path, 
+            capture_output=True, 
+            text=True, 
+            shell=True
+        )
+        if build_res.returncode != 0:
+            error_msg = f"NPM Build Failed:\n{build_res.stderr}\n{build_res.stdout}"
+            print(f"❌ Build validation failed at build step.")
+            return error_msg
+
+        print("✨ Build successful!")
+        return None
+
+    except Exception as e:
+        print(f"⚠️ Build check exception: {e}")
+        return str(e)
