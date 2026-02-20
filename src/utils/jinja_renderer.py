@@ -1,10 +1,12 @@
 import os
+import re
 from jinja2 import Environment, FileSystemLoader
+from typing import Dict
 
-def render_template_folder(template_name: str, context: dict) -> str:
+def render_template_folder(template_name: str, context: dict) -> Dict[str, str]:
     """
-    Renders all .j2 files in a template folder and returns a multi-file string 
-    compatible with the current renderer's parsing logic (>>> filename).
+    Renders all .j2 files in a template folder and returns a dictionary 
+    mapping filenames to their rendered content.
     """
     base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     template_dir = os.path.join(base_path, "templates", template_name)
@@ -12,9 +14,13 @@ def render_template_folder(template_name: str, context: dict) -> str:
     if not os.path.exists(template_dir):
         raise ValueError(f"Template directory {template_dir} does not exist.")
 
-    env = Environment(loader=FileSystemLoader(template_dir))
+    env = Environment(
+        loader=FileSystemLoader(template_dir),
+        comment_start_string='{##',
+        comment_end_string='##}'
+    )
     
-    rendered_files = []
+    rendered_files = {}
     
     for root, _, files in os.walk(template_dir):
         for file in files:
@@ -33,7 +39,19 @@ def render_template_folder(template_name: str, context: dict) -> str:
                 # Determine final filename (remove .j2)
                 final_filename = rel_path[:-3].replace("\\", "/")
                 
-                # Format as >>> filename
-                rendered_files.append(f">>> {final_filename}\n{content}")
+                # If the template already uses multi-file delimiters (>>>), 
+                # split them into multiple entries in the dictionary.
+                if ">>>" in content:
+                    # Split while keeping the delimiter to find filenames
+                    blocks = re.split(r'^>>>\s*', content, flags=re.MULTILINE)
+                    for block in blocks:
+                        block = block.strip()
+                        if not block: continue
+                        lines = block.split('\n')
+                        fname = lines[0].strip()
+                        fcontent = "\n".join(lines[1:]).strip()
+                        rendered_files[fname] = fcontent
+                else:
+                    rendered_files[final_filename] = content.strip()
                 
-    return "\n\n".join(rendered_files)
+    return rendered_files

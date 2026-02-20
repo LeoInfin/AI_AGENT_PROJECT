@@ -1,27 +1,45 @@
 import React from 'react';
 
-{% if custom_components %}
-{% for comp in custom_components %}
+{% if custom_components -%}
+{% for comp in custom_components -%}
 import {{ comp.component_name }} from '@/components/sections/{{ comp.component_name }}';
-{% endfor %}
-{% endif %}
+{% endfor -%}
+{%- endif %}
 
-interface HomeProps {
-// You can add global home props here
+interface Feature {
+title: string;
+description: string;
 }
 
-export default function Home({}: HomeProps) {
+interface HomeProps {
+primaryColor?: string;
+secondaryColor?: string;
+projectName?: string;
+features?: Feature[];
+}
+
+export default function Home({
+primaryColor = "#3B82F6",
+secondaryColor = "#10B981",
+projectName = "My AI Project",
+features = [
+{ title: "Fast", description: "Incredibly fast performance." },
+{ title: "Secure", description: "Your data is safe with us." },
+{ title: "Easy", description: "Simple to use interface." }
+]
+}: HomeProps) {
 return (
 <div className="space-y-12">
-    {% if custom_components %}
-    {% for comp in custom_components %}
-    <{{ comp.component_name }} />
-    {% endfor %}
-    {% else %}
+    {% if custom_components -%}
+    {% for comp in custom_components -%}
+    <{{ comp.component_name }} primaryColor={primaryColor} secondaryColor={secondaryColor} projectName={projectName}
+        features={features} />
+    {% endfor -%}
+    {%- else -%}
     <section className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
         <p>Welcome to your new page. Add custom components to see them rendered here.</p>
     </section>
-    {% endif %}
+    {%- endif %}
 </div>
 );
 }

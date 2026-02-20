@@ -3,25 +3,33 @@ import re
 import subprocess
 from src.state import AgentState
 from src.utils.jinja_renderer import render_template_folder
-from src.config import PROJECTS_FOLDER
+from src.config import PROJECTS_FOLDER, PROTECTED_FILES
 
-def parse_and_write_files(raw_code: str, target_folder: str):
+def parse_and_write_files(files_dict: dict | str, target_folder: str, is_template: bool = False):
     """
-    Parses the multi-file string format (>>> filename) and writes content to disk.
+    Writes content to disk. Supports both the new Dict[fname, content] format 
+    and the legacy multi-file string format (>>> filename).
     """
-    file_blocks = re.split(r'^>>>\s*', raw_code, flags=re.MULTILINE)
+    if isinstance(files_dict, str):
+        # Legacy support for multi-file string format
+        file_blocks = re.split(r'^>>>\s*', files_dict, flags=re.MULTILINE)
+        files_dict = {}
+        for block in file_blocks:
+            block = block.strip()
+            if not block:
+                continue
+            lines = block.split('\n')
+            filename = lines[0].strip()
+            content = "\n".join(lines[1:]).strip()
+            files_dict[filename] = content
 
-    for block in file_blocks:
-        block = block.strip()
-        if not block:
-            continue
-
-        lines = block.split('\n')
-        filename = lines[0].strip()
-        content = "\n".join(lines[1:]).strip()
-
+    for filename, content in files_dict.items():
         # Clean up markdown tags
         content = re.sub(r'```[a-z]*', '', content).replace('```', '').strip()
+
+        if not is_template and filename in PROTECTED_FILES:
+            print(f"  🛡️  Blocked attempt to overwrite protected file: {filename}")
+            continue
 
         file_path = os.path.join(target_folder, filename)
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
@@ -64,17 +72,17 @@ def save_project_to_disk(state: AgentState, base_folder: str = "generated_app"):
 
     print(f"🎨 Rendering base template: {template_name}")
     try:
-        template_code = render_template_folder(template_name, context)
-        parse_and_write_files(template_code, final_folder)
+        template_files = render_template_folder(template_name, context)
+        parse_and_write_files(template_files, final_folder, is_template=True)
     except Exception as e:
         print(f"⚠️ Template rendering failed or skipped: {e}")
 
     # 3. Write AI-Generated Code
     # This will overwrite template files (like App.tsx) or add new ones (components)
-    raw_code = state.get("code", "")
-    if raw_code:
+    code_dict = state.get("code", {})
+    if code_dict:
         print("🧠 Applying AI generated logic and components...")
-        parse_and_write_files(raw_code, final_folder)
+        parse_and_write_files(code_dict, final_folder, is_template=False)
     else:
         print("ℹ️ No AI code found in state to apply.")
 

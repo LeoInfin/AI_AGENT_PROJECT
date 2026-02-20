@@ -1,0 +1,58 @@
+{% if custom_components %}
+{% for comp in custom_components %}
+>>> src/components/sections/{{ comp.component_name }}.tsx
+import React from 'react';
+{# AI_IMPORTS #}
+
+/**
+* Interface for {{ comp.component_name }} Component Props.
+* This structure makes the component stricter and easier for the AI to implement reliably.
+*/
+interface {{ comp.component_name }}Props {
+primaryColor?: string;
+secondaryColor?: string;
+projectName?: string;
+features?: Array<{ title: string; description: string; icon?: string; }>;
+    {# AI_INTERFACE #}
+    }
+
+    /**
+    * {{ comp.component_name }} Section
+    *
+    * This component is structured to allow the Implementor agent to inject logic and content
+    * into specific zones while maintaining a solid TypeScript contract.
+    */
+    export default function {{ comp.component_name }}({
+    primaryColor = "#3B82F6",
+    secondaryColor = "#10B981",
+    projectName = "My AI Project",
+    features = []
+    }: {{ comp.component_name }}Props) {
+
+    {# AI_STATE #}
+    {# AI_HOOKS #}
+
+    return (
+    <section id="{{ comp.component_name | lower }}"
+        className="py-24 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
+        <div className="container mx-auto px-6">
+            {# AI_JSX #}
+
+            {/* Default Template Content - Implementor should replace or enhance this */}
+            <div className="flex flex-col items-center justify-center text-center">
+                <h2 className="text-4xl font-extrabold mb-4 text-gray-900 dark:text-white">
+                    {{ comp.component_name }} Section
+                </h2>
+                <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl">
+                    Waiting for logic and design implementation by the Implementor agent.
+                    This section currently uses standard props like primaryColor ({primaryColor}).
+                </p>
+            </div>
+        </div>
+    </section>
+    );
+    }
+    {% endfor %}
+    {% else %}
+    // No custom components defined in state.
+    {% endif %}
